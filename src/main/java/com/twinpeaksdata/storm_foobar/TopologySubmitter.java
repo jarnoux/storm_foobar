@@ -6,14 +6,33 @@ import backtype.storm.generated.StormTopology;
 import backtype.storm.testing.TestWordSpout;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.utils.Utils;
+import com.twinpeaksdata.storm_client.TopologyFactory;
 
 /**
  *
  * @author jacques
  */
-public class Main {
+public class TopologySubmitter extends TopologyFactory {
 
     public static void main(String[] args) {
+        
+        StormTopology topology = new TopologySubmitter().newTopology();
+        
+        Config conf = new Config();
+        conf.setDebug(true);
+        conf.setNumWorkers(2);
+        LocalCluster cluster = new LocalCluster();
+        
+        
+        cluster.submitTopology("test", conf, topology);
+        Utils.sleep(10000);
+        cluster.killTopology("test");
+        cluster.shutdown();
+        
+    }
+
+    @Override
+    public StormTopology newTopology() {
 
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("words", new TestWordSpout(), 10);
@@ -26,17 +45,6 @@ public class Main {
         builder.setBolt("exclaim4", new ExclamationBolt(), 2)
                 .shuffleGrouping("exclaim2").shuffleGrouping("exclaim3");
 
-        StormTopology topology = builder.createTopology();
-        
-        Config conf = new Config();
-        conf.setDebug(true);
-        conf.setNumWorkers(2);
-        LocalCluster cluster = new LocalCluster();
-        cluster.submitTopology("test", conf, topology);
-        Utils.sleep(10000);
-        cluster.killTopology("test");
-        cluster.shutdown();
-        
+        return builder.createTopology();
     }
-
 }
