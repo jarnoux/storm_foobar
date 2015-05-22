@@ -1,4 +1,4 @@
-package com.twinpeaksdata.storm_foobar;
+package io.twinpeaks.stormfoobar;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
@@ -6,13 +6,13 @@ import backtype.storm.generated.StormTopology;
 import backtype.storm.testing.TestWordSpout;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.utils.Utils;
-import com.twinpeaksdata.storm_client.TopologyFactory;
+import io.twinpeaks.adaptors.storm.TopologyFactory;
 
 /**
  *
  * @author jacques
  */
-public class TopologySubmitter extends TopologyFactory {
+public class TopologySubmitter implements TopologyFactory {
 
     public static void main(String[] args) {
         

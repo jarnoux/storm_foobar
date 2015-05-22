@@ -1,4 +1,4 @@
-package com.twinpeaksdata.storm_foobar;
+package io.twinpeaks.stormfoobar;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
